@@ -1,0 +1,53 @@
+<html>
+  <title></title>
+  <head>
+     <meta name="google-site-verification" content="8jrAHgmGupcLbDzhSifBjhZ7joUEVmdoCh-X4QZ9UIU" />
+  </head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="Home.css">
+  <script src="Home.js" defer></script>
+  
+  <body>
+    <header><i class ="fa fa-shopping-bag"></i><h3>Vastra</h3>
+    <input type="search"placeholder="search for products........" >
+    <img id="profile" src="">
+    </header>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div id="items">
+    <div id="manu">
+      <a href="#">All</a>
+      <a href="#">Manswear</a>
+      <a href="#">Womenswear</a>
+     <a href="#">Footwear</a>
+    <a href="#">KidsWear</a>
+     <a href="#">Grosecry</a>
+     </div>
+     <br>
+  <img id="baner" src="images/background.jpg">
+  <br>
+  <br>
+  
+    
+  </div>
+<script type="module">
+  import { auth } from "./firebase.js";
+  import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+  
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.href = "login.html";
+    }
+    else{
+      const profilepic=user.photoURL
+      document.getElementById("profile").src=profilepic||'images/default.jpg'
+    
+    }
+    
+  });
+</script>
+  </body>
+</html>

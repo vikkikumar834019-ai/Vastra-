@@ -1,0 +1,66 @@
+
+<html>
+  <head>
+    <title>Vastra Login</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="Signup.css">
+  </head>
+  <body style="background-color:#ff60a8">
+    <h3>Welcome to Vastra</h3>
+    
+    <img id="shop" src="images/Shop.jpg" width="200">
+    
+        
+    <button id="login">
+       CONTINUE WITH GOOGLE
+    </button>
+
+    <script type="module">
+      
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-app.js";
+      import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js";
+      import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js";
+
+      
+      const firebaseConfig = {
+        apiKey: "AIzaSyBZ6FfCZifyUDGo6pl5asti2rk2qABN27o",
+        authDomain: "vastra-93097.firebaseapp.com",
+        projectId: "vastra-93097",
+        storageBucket: "vastra-93097.appspot.com",  // fixed
+        messagingSenderId: "864890486651",
+        appId: "1:864890486651:web:b53a48ed26b009e83d07de",
+        measurementId: "G-SXKGCPT2S2"
+      };
+
+      
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+      const provider = new GoogleAuthProvider();
+      const db = getFirestore(app);
+
+      
+      document.getElementById("login").addEventListener("click", async () => {
+        try {
+          const result = await signInWithPopup(auth, provider);
+          const user = result.user;
+
+          // Show welcome alert
+          alert("Welcome, " + user.displayName);
+
+          // Save user info to Firestore
+          await setDoc(doc(db, "users", user.uid), {
+            name: user.displayName,
+            email: user.email,
+            photoURL: user.photoURL,
+            createdAt: serverTimestamp()
+          });
+
+          console.log("User saved in Firestore:", user);
+        } catch (error) {
+          console.error(error);
+          alert(error.message);
+        }
+      });
+    </script>
+  </body>
+</html>
